@@ -1,0 +1,73 @@
+{
+  "name": "mtasks",
+  "version": "1.0.0",
+  "description": "Minimal macOS menu bar Google Tasks app built with Electron + React.",
+  "author": "",
+  "license": "ISC",
+  "main": "electron/main/index.js",
+  "type": "commonjs",
+  "scripts": {
+    "dev": "concurrently -k \"npm:dev:renderer\" \"npm:dev:electron\"",
+    "dev:renderer": "vite",
+    "dev:electron": "wait-on tcp:5173 && cross-env NODE_ENV=development VITE_DEV_SERVER_URL=http://127.0.0.1:5173 electron .",
+    "start": "cross-env NODE_ENV=production electron .",
+    "test:prod": "npm run build:renderer && cross-env NODE_ENV=production electron .",
+    "build:renderer": "vite build",
+    "build": "npm run build:renderer && electron-builder --mac dmg",
+    "pack": "npm run build:renderer && electron-builder --dir",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "dependencies": {
+    "auto-launch": "^5.0.6",
+    "dotenv": "^16.5.0",
+    "electron-store": "^8.2.0",
+    "framer-motion": "^12.23.24",
+    "googleapis": "^146.0.0",
+    "keytar": "^7.9.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "zustand": "^5.0.8"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^5.1.0",
+    "autoprefixer": "^10.4.21",
+    "concurrently": "^9.2.1",
+    "cross-env": "^10.1.0",
+    "electron": "^41.2.0",
+    "electron-builder": "^25.1.8",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.17",
+    "vite": "^7.1.7",
+    "wait-on": "^9.0.1"
+  },
+  "build": {
+    "appId": "com.mtasks.menubar",
+    "productName": "mTasks",
+    "asar": true,
+    "asarUnpack": [
+      "node_modules/keytar/**/*"
+    ],
+    "files": [
+      "electron/**/*",
+      "dist/renderer/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": ".env",
+        "to": "app.env"
+      }
+    ],
+    "directories": {
+      "buildResources": "build",
+      "output": "release"
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "artifactName": "${productName}-${version}-${arch}.${ext}",
+      "category": "public.app-category.productivity"
+    }
+  }
+}
