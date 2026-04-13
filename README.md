@@ -1,6 +1,6 @@
 # mTasks
 
-Minimal macOS menu bar task manager for Google Tasks, built with Electron + React + Tailwind + Zustand.
+Minimal macOS status bar task manager for Google Tasks, built with Electron + React + Tailwind + Zustand.
 
 ## Features
 
